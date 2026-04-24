@@ -38,7 +38,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       name: "",
       email: "",
       password: "",
-      role: "admin",
+      role: "user",
     } as RegisterInput,
   });
 
@@ -113,6 +113,11 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               </FieldDescription>
               <FieldError errors={[form.formState.errors.password]} />
             </Field>
+            <input
+              type="hidden"
+              defaultValue="user"
+              {...form.register("role")}
+            />
             <Field>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Creating account…" : "Create Account"}

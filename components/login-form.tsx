@@ -46,10 +46,6 @@ export function LoginForm({
     setRootError(null);
     try {
       const data = await login(values);
-      if (data.user.role !== "admin") {
-        setRootError("Only admin accounts can sign in to this portal.");
-        return;
-      }
       setAuth({
         token: data.token,
         user: {
@@ -60,11 +56,11 @@ export function LoginForm({
         },
       });
       const target = searchParams.get("from");
-      if (target && !target.includes("..") && target.startsWith("/admin")) {
+      if (target && !target.includes("..")) {
         router.replace(target);
         return;
       }
-      router.replace("/admin");
+      router.replace(data.user.role === "admin" ? "/admin" : "/");
     } catch (err) {
       setRootError(
         getApiErrorMessage(err, "Could not sign you in. Try again.")

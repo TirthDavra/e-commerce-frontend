@@ -15,5 +15,5 @@ export const registerFormSchema = z.object({
     .string()
     .min(1, "Password is required")
     .min(6, "Password must be at least 6 characters"),
-  role: z.literal("admin"),
+  role: z.enum(["admin", "user"]).optional(),
 });

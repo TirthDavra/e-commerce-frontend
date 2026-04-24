@@ -4,7 +4,7 @@ import { loginFormSchema, registerFormSchema } from "./schemas";
 export type LoginInput = z.infer<typeof loginFormSchema>;
 export type RegisterInput = z.infer<typeof registerFormSchema>;
 
-export type UserRole = "admin" | "recruiter" | "candidate";
+export type UserRole = "admin" | "user" | "recruiter" | "candidate";
 
 export type AuthUserDto = {
   id: string;

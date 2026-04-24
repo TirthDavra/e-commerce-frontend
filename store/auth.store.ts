@@ -9,7 +9,7 @@ const noopStorage: StateStorage = {
   removeItem: () => {},
 };
 
-export type UserRole = "admin" | "recruiter" | "candidate";
+export type UserRole = "admin" | "user" | "recruiter" | "candidate";
 
 export interface User {
   _id: string;

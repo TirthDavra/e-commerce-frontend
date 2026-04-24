@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Portal",
-  description: "Admin authentication portal with protected dashboard",
+  title: "Shop - E-commerce Store",
+  description: "Discover amazing products at great prices",
 };
 
 export default function RootLayout({

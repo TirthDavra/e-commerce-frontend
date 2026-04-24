@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth.store";
@@ -12,9 +13,11 @@ export default function OrderSuccessPage() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const { items, clearCart } = useCartStore();
+  const queryClient = useQueryClient();
   const [hydrated, setHydrated] = useState(() => useAuthStore.persist.hasHydrated());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const orderProcessed = useRef(false);
 
   useEffect(() => {
     if (!hydrated) {
@@ -23,7 +26,10 @@ export default function OrderSuccessPage() {
 
     const createOrder = async () => {
       if (!user) {
-        router.push("/login?from=/order-success");
+        return; // wait for user to hydrate
+      }
+
+      if (orderProcessed.current) {
         return;
       }
 
@@ -32,6 +38,8 @@ export default function OrderSuccessPage() {
         setTimeout(() => router.push("/"), 3000);
         return;
       }
+
+      orderProcessed.current = true;
 
       try {
         const address = sessionStorage.getItem("checkout_address") || "Not provided";
@@ -48,6 +56,7 @@ export default function OrderSuccessPage() {
         clearCart();
         sessionStorage.removeItem("checkout_address");
         setIsLoading(false);
+        queryClient.invalidateQueries({ queryKey: ["products"] });
       } catch (err: any) {
         console.error("Failed to create order:", err);
         setError(
@@ -70,11 +79,26 @@ export default function OrderSuccessPage() {
     return unsub;
   }, []);
 
+  if (!hydrated) {
+    return (
+      <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your order details...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center">
-          <p className="text-muted-foreground mb-4">Redirecting to login...</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Authentication Required</h1>
+          <p className="text-muted-foreground mb-6">You need to be logged in to view this page.</p>
+          <Button onClick={() => router.push("/login?from=/order-success")} className="w-full">
+            Log In
+          </Button>
         </div>
       </div>
     );

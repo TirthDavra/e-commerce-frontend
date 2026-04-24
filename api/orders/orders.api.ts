@@ -24,6 +24,11 @@ export interface Order {
 }
 
 export async function getOrders(): Promise<Order[]> {
-  const { data } = await api.get<{ message: string; orders: Order[] }>("/orders");
-  return data.orders;
+  try {
+    const { data } = await api.get<{ message: string; orders: Order[] }>("/orders");
+    return data.orders;
+  } catch (error) {
+    console.error("Failed to fetch orders:", error);
+    return [];
+  }
 }

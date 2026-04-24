@@ -1,50 +1,15 @@
-"use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuthStore } from "@/store/auth.store";
 import { getOrders, type Order } from "@/api/orders/orders.api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function OrdersPage() {
-  const router = useRouter();
-  const user = useAuthStore((state) => state.user);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default async function OrdersPage() {
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/login?from=/orders");
-      return;
-    }
 
-    const fetchOrders = async () => {
-      try {
-        const data = await getOrders();
-        setOrders(data);
-        setError(null);
-      } catch (err: any) {
-        console.error("Failed to fetch orders:", err);
-        setError("Failed to load orders. Please try again.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const orders = await getOrders();
 
-    fetchOrders();
-  }, [user, router]);
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-muted-foreground">Redirecting...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -56,7 +21,7 @@ export default function OrdersPage() {
           </Link>
         </div>
 
-        {isLoading ? (
+        {orders.length === 0 ? (
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
               <Card key={i}>
@@ -70,15 +35,6 @@ export default function OrdersPage() {
               </Card>
             ))}
           </div>
-        ) : error ? (
-          <Card className="border-red-200 bg-red-50">
-            <CardHeader>
-              <CardTitle className="text-red-600">Error</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-red-600">{error}</p>
-            </CardContent>
-          </Card>
         ) : orders.length === 0 ? (
           <Card>
             <CardHeader>
@@ -111,20 +67,18 @@ export default function OrdersPage() {
                       <p className="text-xl font-bold">${order.totalAmount.toFixed(2)}</p>
                       <div className="flex gap-2 mt-2">
                         <span
-                          className={`px-2 py-1 rounded text-xs font-semibold ${
-                            order.status === "completed"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
+                          className={`px-2 py-1 rounded text-xs font-semibold ${order.status === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                            }`}
                         >
                           {order.status}
                         </span>
                         <span
-                          className={`px-2 py-1 rounded text-xs font-semibold ${
-                            order.paymentStatus === "completed"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-orange-100 text-orange-800"
-                          }`}
+                          className={`px-2 py-1 rounded text-xs font-semibold ${order.paymentStatus === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-orange-100 text-orange-800"
+                            }`}
                         >
                           {order.paymentStatus}
                         </span>

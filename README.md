@@ -1,12 +1,12 @@
-# Job Platform Frontend
+# E-commerce Platform Frontend
 
-A modern React frontend for a job platform application, built with Next.js 16, React 19, and TypeScript.
+A modern React frontend for an e-commerce application, built with Next.js 16, React 19, and TypeScript.
 
 ## Features
 
-- User authentication and role-based dashboards
-- Job browsing and application for candidates
-- Job posting and management for recruiters
+- User authentication and role-based access
+- Product browsing and shopping cart
+- Order management and checkout
 - Admin dashboard for platform management
 - Responsive design with shadcn/ui components
 - Real-time form validation
@@ -75,7 +75,7 @@ A modern React frontend for a job platform application, built with Next.js 16, R
 
 | Variable                  | Description                          | Default |
 |---------------------------|--------------------------------------|---------|
-| `NEXT_PUBLIC_API_BASE_URL`| Backend API base URL                 | http://localhost:5000 |
+| `NEXT_PUBLIC_API_BASE_URL`| Backend API base URL                 | http://localhost:5000/api |
 
 ## Architectural Decisions
 
@@ -104,8 +104,8 @@ frontend/
 ├── app/
 │   ├── (auth)/
 │   ├── admin/
-│   ├── candidate/
-│   ├── recruiter/
+│   ├── checkout/
+│   ├── orders/
 │   ├── api/
 │   ├── globals.css
 │   ├── layout.tsx
@@ -132,10 +132,9 @@ frontend/
 
 ## Key Components
 
-- **RolePanel**: Auth guard component that redirects based on user role
-- **RoleDashboardShell**: Layout component with sidebar navigation
 - **Auth Store**: Zustand store for authentication state
 - **API Layer**: Centralized API functions for backend communication
+- **Cart Store**: Zustand store for shopping cart management
 
 ## Deployment
 

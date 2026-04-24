@@ -33,14 +33,12 @@ const ADMIN_NAV: NavItem[] = [
 
 const NAV_BY_ROLE: Record<UserRole, NavItem[]> = {
   admin: ADMIN_NAV,
-  candidate: [],
-  recruiter: [],
+  user: [],
 };
 
 const ROLE_LABEL: Record<UserRole, string> = {
-  recruiter: "Recruiter",
-  candidate: "Candidate",
   admin: "Admin",
+  user: "User",
 };
 
 function navItemActive(pathname: string, href: string) {

@@ -8,6 +8,7 @@ import { ProductFilters } from "@/components/product-filters";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { CartButton } from "@/components/cart-button";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth.store";
 
 interface ProductListingProps {
   initialProducts: Product[];
@@ -17,6 +18,9 @@ export function ProductListing({ initialProducts }: ProductListingProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   const hasActiveFilters = searchQuery || minPrice || maxPrice;
 
@@ -65,7 +69,14 @@ export function ProductListing({ initialProducts }: ProductListingProps) {
           <div className="flex items-center justify-between h-16">
             <h1 className="text-2xl font-bold text-gray-900">Shop</h1>
 
-            <CartButton />
+            <div className="flex items-center gap-3">
+              {user ? (
+                <Button variant="outline" onClick={logout} size="sm">
+                  Logout
+                </Button>
+              ) : null}
+              <CartButton />
+            </div>
           </div>
         </div>
       </header>

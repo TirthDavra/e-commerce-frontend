@@ -1,4 +1,4 @@
-const ROLE_VALUES = new Set(["admin", "recruiter", "candidate"]);
+const ROLE_VALUES = new Set(["admin", "user"]);
 
 /**
  * Reads `role` from a JWT payload without verifying the signature.

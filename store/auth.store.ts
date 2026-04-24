@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage, type StateStorage } from "zustand/middleware";
+import { useCartStore } from "./cart.store";
 
 const noopStorage: StateStorage = {
   getItem: () => null,
@@ -9,7 +10,7 @@ const noopStorage: StateStorage = {
   removeItem: () => {},
 };
 
-export type UserRole = "admin" | "user" | "recruiter" | "candidate";
+export type UserRole = "admin" | "user";
 
 export interface User {
   _id: string;
@@ -45,6 +46,9 @@ export const useAuthStore = create<AuthState>()(
           document.cookie =
             "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0";
         }
+
+        // Clear cart when user logs out
+        useCartStore.getState().clearCart();
       },
     }),
     {

@@ -23,17 +23,7 @@ export default async function OrdersPage() {
 
         {orders.length === 0 ? (
           <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <Card key={i}>
-                <CardHeader>
-                  <Skeleton className="h-6 w-32" />
-                  <Skeleton className="h-4 w-48 mt-2" />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className="h-10 w-24" />
-                </CardContent>
-              </Card>
-            ))}
+            <p>You haven&apos;t placed any orders yet.</p>
           </div>
         ) : orders.length === 0 ? (
           <Card>

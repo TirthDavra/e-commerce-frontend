@@ -1,21 +1,10 @@
-import { AdminDashboardContent } from "@/components/admin-dashboard-content";
-import { getAdminDashboard } from "@/api/admin/dashboard.api";
-import { getApiErrorMessage } from "@/lib/api-error";
-
-export const dynamic = "force-dynamic";
-
-export default async function AdminDashboardPage() {
-  let data = null;
-  let error: string | null = null;
-
-  try {
-    data = await getAdminDashboard();
-  } catch (err) {
-    error = getApiErrorMessage(
-      err,
-      "Could not load admin overview. Try refreshing."
-    );
-  }
-
-  return <AdminDashboardContent data={data} error={error} />;
+export default function AdminDashboardPage() {
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+        <p className="text-gray-600">Welcome to the admin panel</p>
+      </div>
+    </div>
+  );
 }

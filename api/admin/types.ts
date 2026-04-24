@@ -8,12 +8,9 @@ export type AdminRecentUser = {
 
 export type AdminDashboardResponse = {
   totalUsers: number;
-  recruiterCount: number;
-  candidateCount: number;
   adminCount: number;
-  totalJobs: number;
-  openJobs: number;
-  closedJobs: number;
-  totalApplications: number;
+  userCount: number;
+  totalProducts: number;
+  totalOrders: number;
   recentUsers: AdminRecentUser[];
 };

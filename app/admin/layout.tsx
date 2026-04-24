@@ -1,9 +1,7 @@
-import { RoleDashboardShell } from "@/components/role-dashboard-shell";
-
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <RoleDashboardShell role="admin">{children}</RoleDashboardShell>;
+  return <div className="min-h-screen bg-gray-100">{children}</div>;
 }
